@@ -1,6 +1,8 @@
-import axios, { AxiosResponse } from 'axios';
+import { Eventing } from './Eventing';
+import { Sync } from './Sync';
+import { Attributes } from './Attributes';
 
-interface UserProps {
+export interface UserProps {
     // ? is added to make the fields optional so that
     // user does not have to always provide both the name and age and stand alone name and age would work
     id?: number;
@@ -8,59 +10,17 @@ interface UserProps {
     age?:number;
 }
 
-type Callback = () => void;
+const rootUrl = 'http://localhost:300/users'
+
 
 export class User {
 
-    events: {[key: string]: Callback[]} = {};
+    public events: Eventing = new Eventing();
+    public sync: Sync<UserProps> = new Sync<UserProps>(rootUrl);
 
-    constructor(private data: UserProps){}
-
-    get(propName: string): (number | string) {
-        return this.data[propName];
+    public attributes: Attributes<UserProps>;
+    constructor(attrs: UserProps) {
+        this.attributes = new Attributes<UserProps>(attrs);
     }
-
-    set(update: UserProps): void {
-        Object.assign(this.data, update);
-    }
-
-    on(eventName: string, callback: Callback): void {
-        const handlers = this.events[eventName] || [];
-        handlers.push(callback);
-        this.events[eventName] = handlers;
-    }
-
-    trigger(eventName: string): void {
-        const handlers = this.events[eventName];
-
-        if(!handlers || handlers.length === 0){
-            return;
-        }
-
-        handlers.forEach(callback => {
-            callback();
-        });
-
-    }
-
-    fetch(): void {
-        axios.get(`http://localhost:3000/users/${this.get('id')}`)
-        .then((response: AxiosResponse): void => {
-            this.set(response.data);
-        });
-    }
-
-    save(): void {
-        if(this.get('id')){
-
-            axios.put(`http://localhost:3000/users/${this.get('id')}`,this.data);
-
-        } else {
-            axios.post('http://localhost:3000/users',this.data);
-
-        }
-
-    }
-
 
 }
