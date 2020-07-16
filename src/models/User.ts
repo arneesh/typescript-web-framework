@@ -25,6 +25,16 @@ export class User extends Model<UserProps> {
         );
     }
 
+    // In case we want to swap the sync methodology
+    // static buildLocalUser(attrs: UserProps): User {
+    //     return new User(
+    //         new Attributes<UserProps>(attrs),
+    //         new Eventing(),
+    //         new LocalSync<UserProps>(rootUrl)
+    //     );
+    // }
+    
+
 
 }
 

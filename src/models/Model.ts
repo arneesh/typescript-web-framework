@@ -21,20 +21,28 @@ interface HasId {
 }
 
 export class Model<T extends HasId> {
+
+    // Always use this shortchut way of creating fields for constructor as it messes with order of things
     constructor(private attributes: ModelAttributes<T>, private events: Events, private sync: Sync<T> ) {}
 
         get on() {
             // not calling function 'on' - returning a reference to the on method in eventing.ts
             return this.events.on;
         }
+
+
+        // Short cut method of creating the same field based getters
+        trigger = this.events.trigger;
     
-        get trigger() {
-            return this.events.trigger;
-        }
-    
-        get get() {
-            return this.attributes.get;
-        }
+        // get trigger() {
+        //     return this.events.trigger;
+        // }
+
+        get = this.attributes.get;
+
+        // get get() {
+        //     return this.attributes.get;
+        // }
     
         set(update: T): void {
             this.attributes.set(update);
