@@ -34,6 +34,12 @@ export class User extends Model<UserProps> {
     }
 
 
+    setRandomAge(): void {
+        const age = Math.round(Math.random() *100);
+        this.set({age});
+    }
+
+
     // In case we want to swap the sync methodology
     // static buildLocalUser(attrs: UserProps): User {
     //     return new User(
