@@ -9,6 +9,16 @@
       "name": "arneesh",
       "age": 99,
       "id": 2
+    },
+    {
+      "name": "Spectra",
+      "age": 44,
+      "id": 3
+    },
+    {
+      "name": "Spectra",
+      "age": 44,
+      "id": 4
     }
   ]
 }
